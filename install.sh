@@ -46,6 +46,8 @@ link_all() {
   for item in "$src"/$pattern; do
     [ -e "$item" ] || continue   # nothing matched
     name=$(basename "$item")
+    # README 는 문서용이므로 심링크 대상에서 제외
+    [ "$name" = "README.md" ] && continue
     ln -sfn "$item" "$dst/$name"
     echo "  ✓ $(basename "$dst")/$name linked"
   done
