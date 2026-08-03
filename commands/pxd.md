@@ -31,7 +31,7 @@ pxd 신입 온보딩 설문의 답변을 저장합니다. (설문 문항은 이 
 
 ### 3. 저장
 
-- 저장 폴더: `~/pxd-onboarding-responses/` (이 폴더는 private git repo `chrislee-cmd/pxd-responses` 의 clone)
+- 저장 폴더: `~/pxd-responses/` (이 폴더는 public git repo `pxd-labs/responses` 의 clone, PAT 임베드된 remote 로 push 가능)
 - 폴더가 없으면 안내: "install.sh 를 먼저 실행해서 응답 저장소를 clone 하세요"
 - 파일명: `<이름>.md` (예: `홍길동.md`)
 - 이미 같은 이름의 파일이 있으면 사용자에게 덮어쓸지 물어봄
@@ -75,12 +75,12 @@ git push 2>/dev/null && SYNC_OK=1 || SYNC_OK=0
 ```
 ✓ 온보딩 응답 저장 완료
 - 이름: <이름>
-- 파일: ~/pxd-onboarding-responses/<이름>.md
-- GitHub 푸시: <✓ chrislee-cmd/pxd-responses  또는  △ 로컬 저장만 (push 스킵)>
+- 파일: ~/pxd-responses/<이름>.md
+- GitHub 푸시: <✓ pxd-labs/responses  또는  △ 로컬 저장만 (push 스킵)>
 - 현재까지 저장된 응답: N명
 ```
 
-`ls ~/pxd-onboarding-responses/*.md | grep -v README | wc -l` 로 전체 응답 수 확인 (README 제외).
+`ls ~/pxd-responses/*.md | grep -v README | wc -l` 로 전체 응답 수 확인 (README 제외).
 
 ## 특이 케이스
 
