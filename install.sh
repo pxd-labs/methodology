@@ -6,7 +6,10 @@ set -euo pipefail
 METHODOLOGY_URL="https://github.com/pxd-labs/methodology.git"
 METHODOLOGY_DIR="${HOME}/pxd-methodology"
 
-COMMANDS_DIR="${HOME}/.claude/commands"
+CLAUDE_DIR="${HOME}/.claude"
+COMMANDS_DIR="${CLAUDE_DIR}/commands"
+AGENTS_DIR="${CLAUDE_DIR}/agents"
+SKILLS_DIR="${CLAUDE_DIR}/skills"
 
 # --- Preflight ----------------------------------------------------------
 
@@ -30,23 +33,40 @@ else
   git clone "$METHODOLOGY_URL" "$METHODOLOGY_DIR"
 fi
 
-# --- Symlink commands ---------------------------------------------------
+# --- Helper: symlink files or dirs into a target ------------------------
 
-mkdir -p "$COMMANDS_DIR"
-for cmd in "$METHODOLOGY_DIR"/commands/*.md; do
-  name=$(basename "$cmd")
-  ln -sf "$cmd" "$COMMANDS_DIR/$name"
-  echo "  ✓ /$(basename "$name" .md) linked"
-done
+link_all() {
+  # $1 = source dir (may be missing)
+  # $2 = target dir
+  # $3 = glob (e.g. '*.md' or '*/' )
+  local src="$1"; local dst="$2"; local pattern="$3"
+  [ -d "$src" ] || return 0
+  mkdir -p "$dst"
+  # shellcheck disable=SC2086
+  for item in "$src"/$pattern; do
+    [ -e "$item" ] || continue   # nothing matched
+    name=$(basename "$item")
+    ln -sfn "$item" "$dst/$name"
+    echo "  ✓ $(basename "$dst")/$name linked"
+  done
+}
 
-# --- Local backup folder (optional, for /pxd offline fallback) ----------
+# --- Symlink harness elements -------------------------------------------
+
+link_all "$METHODOLOGY_DIR/commands" "$COMMANDS_DIR" "*.md"
+link_all "$METHODOLOGY_DIR/agents"   "$AGENTS_DIR"   "*.md"
+link_all "$METHODOLOGY_DIR/skills"   "$SKILLS_DIR"   "*/"
+
+# --- Local backup folder (for /pxd offline fallback) --------------------
 
 mkdir -p "${HOME}/pxd-responses"
 
 echo ""
-echo "✓ Done. GitHub auth 필요 없음. 응답은 Vercel API 로 즉시 공유됩니다."
+echo "✓ Done."
 echo "  - 방법론: $METHODOLOGY_DIR"
-echo "  - 로컬 백업 폴더: ${HOME}/pxd-responses"
-echo "  - 실시간 공유 API: https://pxd-api.vercel.app/api/responses"
+echo "  - 슬래시 커맨드: $COMMANDS_DIR/"
+echo "  - 서브에이전트: $AGENTS_DIR/"
+echo "  - 스킬: $SKILLS_DIR/"
+echo "  - 로컬 백업: ${HOME}/pxd-responses/"
 echo ""
-echo "새 'claude' 세션에서 /pxd 또는 /pxd-lunch 실행하세요."
+echo "새 'claude' 세션에서 /pxd · /pxd-lunch · Agent 툴에서 pxd-* 에이전트 사용 가능."
