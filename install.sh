@@ -12,7 +12,7 @@ RESPONSES_DIR="${HOME}/pxd-responses"
 # Public repo, public token (by design for demo). Fine-grained PAT scoped
 # to pxd-labs org / All repositories / Contents: Read and Write only.
 # If abused → rotate at github.com/settings/tokens and re-push install.sh.
-RESPONSES_PUSH_TOKEN="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"
+RESPONSES_PUSH_TOKEN="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"
 
 COMMANDS_DIR="${HOME}/.claude/commands"
 
