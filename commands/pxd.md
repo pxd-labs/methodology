@@ -54,19 +54,19 @@ pxd 신입 온보딩 설문의 답변을 저장합니다. (설문 문항은 이 
 > <$ARGUMENTS 원문 그대로>
 ```
 
-### 5. Git 커밋 + 푸시 (auto-sync)
+### 5. Git 커밋 + 푸시 (auto-sync, **실패해도 시연 안 멈춤**)
 
-파일 저장 직후 응답 저장소로 자동 push:
+파일 저장 직후 응답 저장소로 자동 push. 각 git 명령은 실패해도 다음 단계로 넘어감:
 
 ```bash
 cd ~/pxd-onboarding-responses
-git pull --ff-only         # 혹시 다른 팀원이 새 응답 push 했을 수 있음
+git pull --ff-only 2>/dev/null || echo "⚠ pull skipped (offline or auth)"
 git add "<이름>.md"
-git commit -m "온보딩 응답: <이름>"
-git push
+git commit -m "온보딩 응답: <이름>" 2>/dev/null || true
+git push 2>/dev/null && SYNC_OK=1 || SYNC_OK=0
 ```
 
-push 실패 시 (충돌·네트워크 문제): 로컬에는 저장됐음을 알리고, 사용자에게 수동 해결 안내.
+**절대 원칙**: git 실패로 사용자에게 에러를 던지지 말 것. 파일이 로컬에 저장된 것만으로도 "저장 완료" 로 보고. 단, sync 상태만 별도로 알림.
 
 ## 보고 형식
 
@@ -76,7 +76,7 @@ push 실패 시 (충돌·네트워크 문제): 로컬에는 저장됐음을 알�
 ✓ 온보딩 응답 저장 완료
 - 이름: <이름>
 - 파일: ~/pxd-onboarding-responses/<이름>.md
-- GitHub 푸시: ✓ chrislee-cmd/pxd-responses
+- GitHub 푸시: <✓ chrislee-cmd/pxd-responses  또는  △ 로컬 저장만 (push 스킵)>
 - 현재까지 저장된 응답: N명
 ```
 
