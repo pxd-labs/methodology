@@ -20,11 +20,19 @@ Claude Code 하네스 실습용 방법론 저장소.
 
 ## 설치 (한 줄)
 
+**Mac / Linux / WSL / Git Bash**:
 ```bash
 curl -fsSL https://raw.githubusercontent.com/pxd-labs/methodology/main/install.sh | bash
 ```
 
+**Windows (PowerShell)**:
+```powershell
+irm https://raw.githubusercontent.com/pxd-labs/methodology/main/install.ps1 | iex
+```
+
 전제조건: `git`, `curl`, `claude` CLI 만 있으면 됨. GitHub 로그인 불필요.
+
+Windows 팁: symlink 는 Developer Mode 활성화 시 정상 동작 (Settings → Privacy & Security → For developers → Developer Mode 켜기). 비활성화 상태면 파일 복사로 대체되며, 방법론 업데이트 시 `install.ps1` 재실행 필요.
 
 ## 사용
 
